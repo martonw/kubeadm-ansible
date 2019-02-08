@@ -5,7 +5,7 @@ $os_image = (ENV['OS_IMAGE'] || "ubuntu16").to_sym
 def set_vbox(vb, config)
   vb.gui = false
   vb.memory = 2048
-  vb.cpus = 1
+  vb.cpus = 2
 
   case $os_image
   when :centos7
@@ -27,8 +27,8 @@ Vagrant.configure("2") do |config|
 
     config.vm.define "k8s-#{name}#{id}" do |n|
       n.vm.hostname = "k8s-#{name}#{id}"
-      ip_addr = "192.16.35.#{private_count}"
-      n.vm.network :private_network, ip: "#{ip_addr}",  auto_config: true
+      ip_addr = "192.168.35.#{private_count}"
+      n.vm.network :private_network, ip: "#{ip_addr}", netmask: 19,  auto_config: true
 
       n.vm.provider :virtualbox do |vb, override|
         vb.name = "#{n.vm.hostname}"
