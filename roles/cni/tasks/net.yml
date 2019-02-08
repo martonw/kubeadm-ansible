@@ -8,8 +8,6 @@
   delegate_to: "{{ groups['master'][0] }}"
   run_once: true
 
-# - pause:
-#     seconds: 60
 - name: Wait for ETCD to become available
   wait_for:
     host: 192.168.36.136
@@ -27,6 +25,12 @@
   with_items:
     - ip-pool1.yml
     - ip-pool2.yml
+
+- name: "Annotate the default namespace to use the default ip pool"
+  shell: kubectl annotate --overwrite ns default cni.projectcalico.org/ipv4pools=[\"default-ipv4-ippool\"]
+  delegate_to: "{{ groups['master'][0] }}"
+  run_once: true
+  
 
 - name: "Create namespace"
   shell: kubectl --kubeconfig={{ kubeadmin_config }} create -f /vagrant/roles/cni/templates/{{ item }}

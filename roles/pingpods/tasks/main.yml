@@ -1,0 +1,11 @@
+---
+
+- name: "Create POD that pings 192.168.35.1 once"
+  shell: kubectl run -it --rm debug-{{ item }} --image=alpine --restart=Never -n {{ item }} -- ping 192.168.35.1 -c 1
+  delegate_to: "{{ groups['master'][0] }}"
+  run_once: true
+  ignore_errors: true
+  with_items:
+    - default
+    - in-subnet
+    - off-subnet
