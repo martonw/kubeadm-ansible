@@ -8,8 +8,14 @@
   delegate_to: "{{ groups['master'][0] }}"
   run_once: true
 
-- pause:
-    seconds: 30
+# - pause:
+#     seconds: 60
+- name: Wait for ETCD to become available
+  wait_for:
+    host: 192.168.36.136
+    port: 6666
+    delay: 10
+    state: started
 
 - name: "Create ippool"
   command: "calicoctl create -f /vagrant/roles/cni/templates/{{ item }}"
