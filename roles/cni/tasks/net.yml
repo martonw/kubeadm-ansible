@@ -30,7 +30,7 @@
   shell: kubectl annotate --overwrite ns default cni.projectcalico.org/ipv4pools=[\"default-ipv4-ippool\"]
   delegate_to: "{{ groups['master'][0] }}"
   run_once: true
-  
+
 
 - name: "Create namespace"
   shell: kubectl --kubeconfig={{ kubeadmin_config }} create -f /vagrant/roles/cni/templates/{{ item }}
@@ -41,19 +41,19 @@
     - namespace-test1.yml
     - namespace-test2.yml
 
-- name: "BGP default configuration"
-  command: "calicoctl create -f /vagrant/roles/cni/templates/bgp_default.yml"
-  environment:
-    ETCD_ENDPOINTS: "http://192.168.36.136:6666"
-  delegate_to: "{{ groups['master'][0] }}"
-  run_once: true
-  # ignore_errors: true
-
-
-- name: "BGP peer setup"
-  command: "calicoctl create -f /vagrant/roles/cni/templates/bgp_peer.yml"
-  environment:
-    ETCD_ENDPOINTS: "http://192.168.36.136:6666"
-  delegate_to: "{{ groups['master'][0] }}"
-  run_once: true
-  # ignore_errors: true
+# - name: "BGP default configuration"
+#   command: "calicoctl create -f /vagrant/roles/cni/templates/bgp_default.yml"
+#   environment:
+#     ETCD_ENDPOINTS: "http://192.168.36.136:6666"
+#   delegate_to: "{{ groups['master'][0] }}"
+#   run_once: true
+#   # ignore_errors: true
+#
+#
+# - name: "BGP peer setup"
+#   command: "calicoctl create -f /vagrant/roles/cni/templates/bgp_peer.yml"
+#   environment:
+#     ETCD_ENDPOINTS: "http://192.168.36.136:6666"
+#   delegate_to: "{{ groups['master'][0] }}"
+#   run_once: true
+#   # ignore_errors: true
