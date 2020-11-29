@@ -38,6 +38,20 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  # Add an extra box for bgp-rr
+  config.vm.define "k8s-bgp-rr" do |n|
+    n.vm.hostname = "k8s-bgp-rr"
+    ip_addr = "192.168.35.15"
+    n.vm.network :private_network, ip: "#{ip_addr}", netmask: "19",  auto_config: true
+
+    n.vm.provider :virtualbox do |vb, override|
+      vb.name = "k8s-bgp-rr"
+      set_vbox(vb, override)
+      vb.memory = 1300
+      vb.cpus = 1
+    end
+  end
+
   # Install of dependency packages using script
   config.vm.provision :shell, path: "./hack/setup-vms.sh"
 end
